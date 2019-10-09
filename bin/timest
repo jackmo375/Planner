@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#
+#	annotate tasks in time
+#
+
+# location of python scripts:
+script=/home/jack/Organization/Database/DependencyMap/
+# default parameter values:
+status=todo
+subgraph=f
+
+data=$1
+
+if [[ -f ${data}'.ranks.gv' ]]; then
+	ranks=${data}'.ranks.gv'
+else
+	ranks='notfound'
+fi
+
+python ${script}timest.py \
+	${data}'.csv' \
+	${status} \
+	${subgraph} \
+	${ranks} \
+	> ${data}.time.gv
+dot -Tps ${data}.time.gv -o ${data}.time.ps

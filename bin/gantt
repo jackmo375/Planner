@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+#	Map dependency graph to Gantt layers
+#		in vcal format
+#
+
+# location of python scripts:
+script=/home/jack/Organization/Database/DependencyMap/
+
+# default parameter values:
+status=todo
+subgraph=f
+
+data=$1
+
+if [[ -f ${data}'.time.gv' ]]; then
+    timefile=${data}'.time.gv'
+else
+    timefile='notfound'
+fi
+
+python ${script}gantt.py \
+    ${data}'.csv' \
+    ${status} \
+    ${subgraph} \
+    ${timefile} \
+    > ${data}.gantt.vcal

@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# turn task list
+#  into network diagram
+#
+
+# typcal calls of this script might be:
+# depmap -o1 param1 -o2 param2 infile.csv (5 arguments)
+# depmap -o param infile.csv (3 arguments)
+# depmap infile.csv (1 argument)
+
+# and the python call needs to be:
+# python infile.csv status subgraph
+
+# location of python scripts:
+script=/home/jack/Organization/Database/DependencyMap/
+# default parameter values:
+status=todo
+subgraph=t
+
+if [[ $# = '5' ]]; then
+	data=$5
+	if [ $1 = '-s' -a $3 = '-g' ]; then
+		status=$2
+		subgraph=$4
+	elif [ '$3' = '-s' -a '$1' = '-g' ]; then
+		status=$4
+		subgraph=$2
+	else
+		echo 'options not recognized'
+		exit 0
+	fi
+elif [[ $# = 3 ]]; then
+	data=$3
+	if [[ $1 = '-s' ]]; then
+		status=$2
+	elif [[ $1 = '-g' ]]; then
+		subgraph=$2
+	else
+		echo 'options not recognized'
+		exit 0
+	fi
+elif [[ $# = 1 ]]; then
+	data=$1
+else
+	echo 'incorrect number of arguments supplied'
+	exit 0
+fi
+
+if [[ $subgraph = 't' ]]; then
+	out='edges'
+elif [[ $subgraph = 'f' ]]; then
+	out='ranks'
+fi
+
+python ${script}tograph.py \
+	${data}'.csv' \
+	${status} \
+	${subgraph} \
+	> ${data}.${out}.gv
+dot -Tps ${data}.${out}.gv -o ${data}.${out}.ps
