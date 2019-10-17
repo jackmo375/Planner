@@ -20,14 +20,16 @@ class TaskList:
 		self.infile  = infile
 		self.headers = instream.readline().strip().split(",")
 		self.maxIndent = self.getMaxIndent()
+		self.headerDict = {self.headers[i]:i for i in range(len(self.headers))}
 		self.tasks   = []
 		for rawline in instream:
 			linearray = rawline.strip().split(",")
 			if len(linearray) <= 3:
 				continue
-			if linearray[self.maxIndent+1]!='To-Do' and status=='todo':
+			# if requested, keep only incomplete tasks/items:
+			if linearray[self.headerDict['Status']]!='To-Do' and status=='todo':
 				continue
-			self.tasks = self.tasks + [rawline.strip().split(",")]
+			self.tasks = self.tasks + [linearray]
 		self.Nnodes     = 0	# private
 		self.Nsubgraphs = 0 # private
 		self.tb = '    '
@@ -61,7 +63,9 @@ class TaskList:
 				j+=1
 			else:
 				printX(i,j)
-				self.endSubgraph(il_next)
+				while il>il_next:
+					self.endSubgraph(il-1)
+					il -= 1
 				j+=1
 			i+=1
 		printX(i,j)

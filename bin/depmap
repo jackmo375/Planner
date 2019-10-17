@@ -4,7 +4,7 @@
 #  into network diagram
 #
 
-# typcal calls of this script might be:
+# typical calls of this script might be:
 # depmap -o1 param1 -o2 param2 infile.csv (5 arguments)
 # depmap -o param infile.csv (3 arguments)
 # depmap infile.csv (1 argument)
@@ -13,7 +13,7 @@
 # python infile.csv status subgraph
 
 # location of python scripts:
-script=/home/jack/Organization/Database/DependencyMap/
+script=/home/jack/Local/Organization/Planner/
 # default parameter values:
 status=todo
 subgraph=t
