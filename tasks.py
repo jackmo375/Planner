@@ -2,6 +2,7 @@
 #	Task List python module
 #
 #############################
+import sys, csv
 
 class TaskList:
 	
@@ -22,14 +23,15 @@ class TaskList:
 		self.maxIndent = self.getMaxIndent()
 		self.headerDict = {self.headers[i]:i for i in range(len(self.headers))}
 		self.tasks   = []
-		for rawline in instream:
-			linearray = rawline.strip().split(",")
-			if len(linearray) <= 3:
+
+		for line in csv.reader(instream):
+			if len(line) <= 3:
 				continue
 			# if requested, keep only incomplete tasks/items:
-			if linearray[self.headerDict['Status']]!='To-Do' and status=='todo':
+			if line[self.headerDict['Status']]!='To-Do' and status=='todo':
 				continue
-			self.tasks = self.tasks + [linearray]
+			self.tasks = self.tasks + [line]
+
 		self.Nnodes     = 0	# private
 		self.Nsubgraphs = 0 # private
 		self.tb = '    '
